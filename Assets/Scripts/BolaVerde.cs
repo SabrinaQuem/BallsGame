@@ -10,6 +10,7 @@ public class BolaVerde : MonoBehaviour
     [SerializeField] float speed = 6f;
 
     [SerializeField] GameObject RedSpawn;
+    [SerializeField] GameObject RedSpawn2;
     private float RedSpawnRangeX = 10f;
     private float RedSpawnRangeY = 4f;
 
@@ -56,11 +57,25 @@ public class BolaVerde : MonoBehaviour
 
     private void SpawnObject()
     {
-        float randomX = Random.Range(-RedSpawnRangeX, RedSpawnRangeX);
-        float randomY = Random.Range(-RedSpawnRangeY, RedSpawnRangeY);
-        Vector2 spawnPosition = new Vector2(randomX, randomY);
+        int randomSpawn = Random.Range(0, 2);
 
-        Instantiate(RedSpawn, spawnPosition, Quaternion.identity);
+        if (randomSpawn == 0)
+        {
+            float randomX = Random.Range(-RedSpawnRangeX, RedSpawnRangeX);
+            float randomY = Random.Range(-RedSpawnRangeY, RedSpawnRangeY);
+            Vector2 spawnPosition = new Vector2(randomX, randomY);
+
+            Instantiate(RedSpawn, spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            float randomX = Random.Range(-RedSpawnRangeX, RedSpawnRangeX);
+            float randomY = Random.Range(-RedSpawnRangeY, RedSpawnRangeY);
+            Vector2 spawnPosition = new Vector2(randomX, randomY);
+
+            Instantiate(RedSpawn2, spawnPosition, Quaternion.identity);
+        }
+        
 
     }
 

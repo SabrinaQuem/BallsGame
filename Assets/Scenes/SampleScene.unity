@@ -1223,6 +1223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   RedSpawn: {fileID: 7898038765536937066, guid: d346ff56cdc11f844bddcf527ed08e22, type: 3}
+  RedSpawn2: {fileID: 6226946266309367334, guid: d367ef7747315f942883b1f46a92896d, type: 3}
   points: 0
   pointsText: {fileID: 909305339}
 --- !u!212 &1958858696

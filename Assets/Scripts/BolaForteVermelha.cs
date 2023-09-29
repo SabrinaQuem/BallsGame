@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BolaVermelha : MonoBehaviour
+public class BolaForteVermelha : MonoBehaviour
 {
     [SerializeField] float speed = 6f;
 
@@ -11,12 +10,15 @@ public class BolaVermelha : MonoBehaviour
 
     private Vector2 direction;
 
+    private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         direction = Random.insideUnitCircle.normalized;
 
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -31,12 +33,11 @@ public class BolaVermelha : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
-        else
+        else if (collision.gameObject.CompareTag("Walls"))
         {
-            direction = Vector2.Reflect(direction, collision.contacts[0].normal);
+            Vector2 playerPosition = player.transform.position;
+            direction = (playerPosition - (Vector2)transform.position).normalized;
         }
     }
-
-
 
 }
