@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -8,7 +11,14 @@ public class Player : MonoBehaviour
     float horizontal;
     float vertical;
 
-    [SerializeField] float speed = 5.0f;
+    public float targetTime = 30f;
+
+    [SerializeField] float speed = 14f;
+
+    [SerializeField] GameObject power;
+    bool powerexists = false;
+
+    public string sceneToLoad;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +31,19 @@ public class Player : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
+
+        targetTime -= Time.deltaTime;
+        
+        if (targetTime <= 0)
+        {
+            ToggleScene();
+        }
+
+        if (targetTime < 20 && !powerexists)
+        {
+            Instantiate(power);
+            powerexists = true; 
+        }
     }
 
     private void FixedUpdate()
@@ -29,5 +52,30 @@ public class Player : MonoBehaviour
         pos.x += speed * horizontal * Time.deltaTime;
         pos.y += speed * vertical * Time.deltaTime;
         rigidbody2d.MovePosition(pos);
+    }
+
+    void ToggleScene()
+    {
+        Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+
+        SceneManager.LoadScene(sceneToLoad);
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player"); 
+        if (player != null)
+        {
+            player.transform.position = playerPosition;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("PowerUp"))
+        {
+            Destroy(collision.gameObject);
+        } 
+        else if (collision.gameObject.CompareTag("GreenBall"))
+        {
+            ScoreManager.Instance.IncreasePoints();
+        }
     }
 }

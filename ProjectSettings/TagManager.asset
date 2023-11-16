@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Walls
+  - Balls
+  - PowerUp
+  - GreenBall
   layers:
   - Default
   - TransparentFX

@@ -2,41 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class BolaVermelha : MonoBehaviour
+public class BolaVermelha : ManagerRedBalls
 {
-    [SerializeField] float speed = 6f;
 
-    Rigidbody2D rb;
-
-    private Vector2 direction;
-
-    // Start is called before the first frame update
-    void Start()
+    public override void OnCollisionEnter2D(Collision2D collision)
     {
-        rb = GetComponent<Rigidbody2D>();
-        direction = Random.insideUnitCircle.normalized;
+        base.OnCollisionEnter2D(collision); // Call the base class method
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        rb.velocity = direction * speed;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(collision.gameObject);
-        }
-        else
+        if (collision.gameObject.CompareTag("Walls"))
         {
             direction = Vector2.Reflect(direction, collision.contacts[0].normal);
         }
     }
-
 
 
 }

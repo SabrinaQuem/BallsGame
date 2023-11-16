@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class BolaVerde : MonoBehaviour
 {
 
     [SerializeField] float speed = 6f;
 
-    [SerializeField] GameObject RedSpawn;
-    [SerializeField] GameObject RedSpawn2;
-    private float RedSpawnRangeX = 10f;
-    private float RedSpawnRangeY = 4f;
-
     private Vector2 direction;
 
     Rigidbody2D rb;
-
-    [SerializeField] private int points = 0;
-    [SerializeField] private Text pointsText;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +26,7 @@ public class BolaVerde : MonoBehaviour
     {
         rb.velocity = direction * speed;
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -43,40 +37,18 @@ public class BolaVerde : MonoBehaviour
             Camera mainCamera = Camera.main;
             mainCamera.backgroundColor = Random.ColorHSV();
 
-            SpawnObject();
 
-           points += 1;
-           pointsText.text = points.ToString();
-
+            ManagerRedBalls.instance.SpawnObject();
         }
-        else
+        else if (collision.gameObject.CompareTag("Walls"))
         {
             direction = Vector2.Reflect(direction, collision.contacts[0].normal);
         }
-    }
-
-    private void SpawnObject()
-    {
-        int randomSpawn = Random.Range(0, 2);
-
-        if (randomSpawn == 0)
+        else if (collision.gameObject.CompareTag("Balls"))
         {
-            float randomX = Random.Range(-RedSpawnRangeX, RedSpawnRangeX);
-            float randomY = Random.Range(-RedSpawnRangeY, RedSpawnRangeY);
-            Vector2 spawnPosition = new Vector2(randomX, randomY);
-
-            Instantiate(RedSpawn, spawnPosition, Quaternion.identity);
-        }
-        else
-        {
-            float randomX = Random.Range(-RedSpawnRangeX, RedSpawnRangeX);
-            float randomY = Random.Range(-RedSpawnRangeY, RedSpawnRangeY);
-            Vector2 spawnPosition = new Vector2(randomX, randomY);
-
-            Instantiate(RedSpawn2, spawnPosition, Quaternion.identity);
+            direction = Vector2.Reflect(direction, collision.contacts[0].normal);
         }
         
-
     }
 
 }
